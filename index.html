@@ -1,0 +1,53 @@
+<?php
+require_once '../config/db.php';
+
+// Ambil data slot parkir dari database
+$result = $conn->query("SELECT * FROM slot_parkir");
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Parking System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .slot-box {
+      border: 2px solid #ccc;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .slot-kosong {
+      background-color: #d4edda;
+    }
+    .slot-terisi {
+      background-color: #f8d7da;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Monitoring Slot Parkir</h2>
+  <div class="row">
+
+    <?php while ($row = $result->fetch_assoc()): ?>
+      <div class="col-md-3">
+        <div class="slot-box <?php echo $row['status'] === 'terisi' ? 'slot-terisi' : 'slot-kosong'; ?>">
+          <h4>Slot <?= htmlspecialchars($row['nama_slot']) ?></h4>
+          <p>Status: <strong><?= strtoupper($row['status']) ?></strong></p>
+        </div>
+      </div>
+    <?php endwhile; ?>
+
+  </div>
+
+  <div class="text-center mt-5">
+    <a href="../admin/login.php" class="btn btn-primary">Login Admin</a>
+  </div>
+</div>
+
+</body>
+</html>
